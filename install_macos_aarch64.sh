@@ -15,7 +15,7 @@ source venv/bin/activate
 pip install casadi caminopy
 pip install -e ../nosnoc_py
 
-# Add LD_LIBRARY_PATH and LD_PRELOAD environment variables to activate script
+# Add DYLIB_LIBRARY_PATH  environment variable to activate script
 # Here you can add gurobi/LibHSL environment variables as well.
 echo "" >> venv/bin/activate
 echo "export DYLIB_LIBRARY_PATH=\"\$LD_LIBRARY_PATH:$(pwd)/../libMad-apple-aarch64-v0.0.12-casadi/lib\"" >> venv/bin/activate
