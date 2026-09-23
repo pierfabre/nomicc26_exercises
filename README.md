@@ -60,7 +60,7 @@ On windows you can follow roughly the same steps as in the case of linux but no 
 1. Clone the repositories
 
 ```powershell
-git clone https://gitlab.syscop.de/armin.nurkanovic/nomicc26_exercise.git
+git clone https://github.com/syscop/nomicc26_exercises.git
 git clone --branch v1.0.0-rc --recurse-submodules https://github.com/nosnoc/nosnoc_py.git
 ```
 
