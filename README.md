@@ -30,9 +30,9 @@ The following software is required to run the examples:
 Additionally, there is some optional software which you can additionally use:
 
 - [`gurobi`](https://www.gurobi.com), which allows you to use the specialized solvers in `CAMINO`.
-  - To install `gurobi`, acquire an [academic licence](https://www.gurobi.com/academics), and follow the installation instructions provided.
+  - To install `gurobi`, acquire an [academic license](https://www.gurobi.com/academics), and follow the installation instructions provided.
 - [`LibHSL`](https://licences.stfc.ac.uk/product/libhsl-2025_7_21), which allows you to use the sparse linear system solvers `MA27`, `MA57`, and `MA97` in `CCOpt.jl` which can significantly speed up solve times.
-  - To install `LibHSL` acquire an academic licence, download the libraries, un-compress them, and set the `JULIA_HSL_LIBRARY_PATH` environment variable. It can be useful to add this as well to the virtual environment activation if you so choose.
+  - To install `LibHSL` acquire an academic license, download the libraries, un-compress them, and set the `JULIA_HSL_LIBRARY_PATH` environment variable. It can be useful to add this as well to the virtual environment activation if you so choose.
 
 We advise to use your favorite virtual environment manager ([`virtualenv`](https://virtualenv.pypa.io/en/latest/), [`venv`](https://docs.python.org/3/library/venv.html), etc.) to set up your exercise environment.
 
