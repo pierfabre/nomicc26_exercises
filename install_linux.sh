@@ -8,7 +8,7 @@ curl -L https://github.com/madsuite-org/libMad/releases/download/v0.0.12-casadi/
 tar -xzf libMad.tar.gz
 
 # Prepare environment
-cd nomicc26_exercise
+cd nomicc26_exercises
 virtualenv -p ">=3.12" venv
 source venv/bin/activate
 
