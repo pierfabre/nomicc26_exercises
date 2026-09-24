@@ -9,7 +9,8 @@ tar -xzf libMad.tar.gz
 
 # Prepare environment
 cd nomicc26_exercises
-virtualenv -p ">=3.12" venv
+# virtualenv -p ">=3.12" venv
+python3 -m venv venv
 source venv/bin/activate
 
 # Install required python packages

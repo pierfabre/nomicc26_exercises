@@ -22,7 +22,7 @@ The following software is required to run the examples:
 - [`CAMINO`](github.com/minlp-toolbox/CAMINO) a software package providing a Python/CasADi-based implementation of several algorithms for solving mixed-integer nonlinear programs (MINLPs). We primarily use this for the `Description` interface which is used to model two of the exercises.
   - Installation: `pip install caminopy`
 - [`libMad`](https://github.com/madsuite-org/libMad), a shared library which contains a c interface for [`CCOpt.jl`](https://github.com/madsuite-org/CCOpt.jl) and [`MadNLP.jl`](https://github.com/madsuite-org/MadNLP.jl).
-  - Installation: Download and untar the correct [built release](https://github.com/madsuite-org/libMad/releases/tag/v0.0.12-casadi). Follow instructions in the README for your particular platform. This mostly involves adding the path to `libMad.<soext>`, to the dynamic library load path on your platform (`LD_LIBRARY_PATH` on linux systems, `DYLIB_LIBRARY_PATH` on apple systems, and `PATH` on windows systems).
+  - Installation: Download and untar the correct [built release](https://github.com/madsuite-org/libMad/releases/tag/v0.0.12-casadi). Follow instructions in the README for your particular platform. This mostly involves adding the path to `libMad.<soext>`, to the dynamic library load path on your platform (`LD_LIBRARY_PATH` on linux systems, `DYLD_LIBRARY_PATH` on apple systems, and `PATH` on windows systems).
 - [`nosnoc`](https://github.com/nosnoc/nosnoc_py) an open source Python software package for NOnSmooth Numerical Optimal Control. We only use `nosnoc` for its [`vdx`](https://github.com/apozharski/vdx_py) based tracking.
   - Installation: Clone `git@github.com:nosnoc/nosnoc_py.git`, checkout the branch `v1.0.0-rc`, and install via `pip install -e .`
 
@@ -38,7 +38,7 @@ We advise to use your favorite virtual environment manager ([`virtualenv`](https
 
 ## Installation on Linux (x86-64) Systems:
 The shell script `install_linux.sh` should provide you with a functioning environment on a linux-x86-64 based machine with `git`, `curl`, `virtualenv`, and `tar` available.
-Roughly the installation script does:
+Roughly the installation script does the following:
 1. Clones and checks out the correct versions of this repository and `nosnoc`.
 2. Downloads and untars the `libMad` binaries.
 3. Creates and populates a virtual environment with the necessary python dependencies.
@@ -46,8 +46,13 @@ Roughly the installation script does:
 5. Runs a test python script which should run with no errors if your system is correctly set up.
 
 ## Installation on Macos (aarch64) Systems:
-The shell script `install_macos_aarch64.sh` should provide you with a functioning environment on a macos-aarch64 based machine with `git`, `curl`, `virtualenv`, and `tar` available.
+The shell script `install_macos_aarch64.sh` should provide you with a functioning environment on a macos-aarch64 based machine with `git`, `curl`, python `venv`, and `tar` available.
 It follows the same general steps as the linux script.
+
+> [!WARNING]  
+> You will _have_ to disable apple "System Integrity Protection" as otherwise, the `DYLD_LIBRARY_PATH` variable will be silently hidden from processes you run. 
+> Alternatively you can use `otool` to set absolute paths for `libcasadi_nlpsol_ccopt.dylib` in your virtual environment `site-packages`.
+> See this [blog post](https://briandfoy.github.io/macos-s-system-integrity-protection-sanitizes-your-environment/) for more details.
 
 ## Installation on Windows (x86-64) Systems:
 On windows you can follow roughly the same steps as in the case of linux but no script is provided (run commands in `powershell`):
@@ -99,61 +104,10 @@ You will need access to a coding agent with a configured model.
 Ensure you have the required subscription or API access before the tutorial.
 If you do not have access, pair with a local organizer or another participant.
 
-The instructor will do the demonstrations with claude (openCode , and similar should work as well).
-
-**Terminal Installation of claude (Recommended)**
-
-- **macOS / Linux / WSL:**  
-  Open your terminal and run the native install script:
-
-  ```bash
-  curl -fsSL https://claude.ai/install.sh | bash
-  ```
-
-  Use code with caution.
-
-- **Windows (PowerShell):**  
-  Open PowerShell and run:
-
-  ```powershell
-  irm https://claude.ai/install.ps1 | iex
-  ```
-
-  Use code with caution.
-
-- **Windows (WinGet):**  
-  Alternatively, install via WinGet: [[1](https://code.claude.com/docs/en/quickstart), [2](https://code.claude.com/docs/en/setup), [3](https://academy.claude.com/courses/claude-code-101/installing-claude-code), [4](https://learn.arm.com/install-guides/claude-code/)]
-
-  ```cmd
-  winget install Anthropic.ClaudeCode
-  ```
-
-You can install OpenCode using the official [OpenCode Download](https://opencode.ai/download) page or 
-by running `curl -fsSL https://opencode.ai/v2/install | bash` in your terminal. [[1](https://opencode.ai/download)]
-
-**macOS and Linux**
-
-- **Install Script:**  
-  Run `curl -fsSL https://opencode.ai/v2/install | bash`
-
-- **Node.js:**  
-  Run `npm install -g @opencode/cli`
-
-- **Bun:**  
-  Run `bun install -g --trust @opencode/cli`
-
-- **Homebrew:**  
-  Run `brew install anomalyco/tap/opencode-v2` [[1](https://opencode.ai/download)]
-
-**Windows**
-
-- **WSL (Recommended):**  
-  Use Windows Subsystem for Linux and run the bash install script inside your WSL terminal. [[1](https://opencode.ai/docs/), [2](https://opencode.ai/docs/windows-wsl/)]
-
-- **Desktop App:**  
-  Download the Windows executable directly from the OpenCode Download page. [[1](https://opencode.ai/download)]
+The instructor will do the demonstrations with claude (openCode, and similar should work as well).
+Instructions for installing claude code can be found on [the claude code setup webpage](https://code.claude.com/docs/en/setup), and for openCode, follow [installation instructions in the documentation](https://opencode.ai/docs).
 
 ## Having trouble or need help? 
 If somethings does not work or is unclear, do not hesistate to contact us! 
-- Anton Pozharskiy · [anton.pozharskiy@imtek.uni-freiburg.de](mailto:anton.pozharskiy@imtek.uni-freiburg.de)
-- Armin Nurkanović · [armin.nurkanovic@imtek.uni-freiburg.de](mailto:armin.nurkanovic@imtek.uni-freiburg.de)
+- Anton Pozharskiy: [anton.pozharskiy@imtek.uni-freiburg.de](mailto:anton.pozharskiy@imtek.uni-freiburg.de)
+- Armin Nurkanović: [armin.nurkanovic@imtek.uni-freiburg.de](mailto:armin.nurkanovic@imtek.uni-freiburg.de)
