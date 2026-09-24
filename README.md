@@ -11,7 +11,7 @@ These exercises are:
 The exercises are written in python, if you are unfamiliar with python, you can pair up with a participant who is, or ask the instructors for help.
 Each exercise will be provided in its own directory as a subdirectory of `/exercises` and you will find a more detailed description of each exercise there.
 
-## Pre-requisite software
+## Pre-requisite software (installation instructions in next section)
 
 The following software is required to run the examples:
 
@@ -93,8 +93,67 @@ python -m pip install -e ..\nosnoc_py
 python .\test_install.py --ccopt --camino --nosnoc
 ```
 
-## LLM Tutorial
+## LLMs for our workshop for researchers in computational mathematics
 
-You will need access to a coding agent with a configured model. Ensure you have the required subscription or API access before the tutorial.
-
+You will need access to a coding agent with a configured model. 
+Ensure you have the required subscription or API access before the tutorial.
 If you do not have access, pair with a local organizer or another participant.
+
+The instructor will do the demonstrations with claude (openCode , and similar should work as well).
+
+**Terminal Installation of claude (Recommended)**
+
+- **macOS / Linux / WSL:**  
+  Open your terminal and run the native install script:
+
+  ```bash
+  curl -fsSL https://claude.ai/install.sh | bash
+  ```
+
+  Use code with caution.
+
+- **Windows (PowerShell):**  
+  Open PowerShell and run:
+
+  ```powershell
+  irm https://claude.ai/install.ps1 | iex
+  ```
+
+  Use code with caution.
+
+- **Windows (WinGet):**  
+  Alternatively, install via WinGet: [[1](https://code.claude.com/docs/en/quickstart), [2](https://code.claude.com/docs/en/setup), [3](https://academy.claude.com/courses/claude-code-101/installing-claude-code), [4](https://learn.arm.com/install-guides/claude-code/)]
+
+  ```cmd
+  winget install Anthropic.ClaudeCode
+  ```
+
+You can install OpenCode using the official [OpenCode Download](https://opencode.ai/download) page or 
+by running `curl -fsSL https://opencode.ai/v2/install | bash` in your terminal. [[1](https://opencode.ai/download)]
+
+**macOS and Linux**
+
+- **Install Script:**  
+  Run `curl -fsSL https://opencode.ai/v2/install | bash`
+
+- **Node.js:**  
+  Run `npm install -g @opencode/cli`
+
+- **Bun:**  
+  Run `bun install -g --trust @opencode/cli`
+
+- **Homebrew:**  
+  Run `brew install anomalyco/tap/opencode-v2` [[1](https://opencode.ai/download)]
+
+**Windows**
+
+- **WSL (Recommended):**  
+  Use Windows Subsystem for Linux and run the bash install script inside your WSL terminal. [[1](https://opencode.ai/docs/), [2](https://opencode.ai/docs/windows-wsl/)]
+
+- **Desktop App:**  
+  Download the Windows executable directly from the OpenCode Download page. [[1](https://opencode.ai/download)]
+
+## Having trouble or need help? 
+If somethings does not work or is unclear, do not hesistate to contact us! 
+- Anton Pozharskiy · [anton.pozharskiy@imtek.uni-freiburg.de](mailto:anton.pozharskiy@imtek.uni-freiburg.de)
+- Armin Nurkanović · [armin.nurkanovic@imtek.uni-freiburg.de](mailto:armin.nurkanovic@imtek.uni-freiburg.de)
