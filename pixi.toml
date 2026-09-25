@@ -1,0 +1,60 @@
+[workspace]
+name = "nomicc26_exercises"
+description = "NOMICC 2026 summer school exercises (CasADi + CAMINO + nosnoc + libMad/CCOpt)"
+channels = ["conda-forge"]
+platforms = ["linux-64"]
+
+# ---------------------------------------------------------------------------
+# Conda-forge packages: the interpreter and the "generic" scientific stack.
+# ---------------------------------------------------------------------------
+[dependencies]
+python = "3.12.*"
+numpy = "*"
+scipy = "*"
+matplotlib = "*"
+pandas = "*"
+# libMad's bundled Julia libssl needs libcrypto >= 3.4. If python loads an
+# older libcrypto.so.3 first, CCOpt crashes (that's why upstream's
+# install_linux.sh uses LD_PRELOAD). Pinning conda-forge's openssl makes the
+# preload unnecessary, so nothing outside this env is affected.
+openssl = ">=3.5"
+
+# ---------------------------------------------------------------------------
+# PyPI packages.
+# casadi MUST come from PyPI (not conda-forge): the PyPI wheel ships the
+# `ccopt` nlpsol plugin that dlopens libMad.so, and bundles bonmin/ipopt.
+# It is pinned so a future casadi release can't silently break ccopt.
+# ---------------------------------------------------------------------------
+[pypi-dependencies]
+casadi = "==3.8.1"
+caminopy = "*"
+nosnoc = { git = "https://github.com/nosnoc/nosnoc_py.git", branch = "v1.0.0-rc" }
+
+# ---------------------------------------------------------------------------
+# libMad (CCOpt.jl / MadNLP.jl C interface) is a prebuilt tarball, not a
+# package. It is downloaded into ./deps (git-ignored) by the `setup-libmad`
+# task, and its lib/ dir is put on LD_LIBRARY_PATH inside the pixi env only.
+# ---------------------------------------------------------------------------
+[activation.env]
+LIBMAD_VERSION = "v0.0.12-casadi"
+LIBMAD_DIR = "$PIXI_PROJECT_ROOT/deps/libMad-ubuntu-x86_64-v0.0.12-casadi"
+LD_LIBRARY_PATH = "$PIXI_PROJECT_ROOT/deps/libMad-ubuntu-x86_64-v0.0.12-casadi/lib:$LD_LIBRARY_PATH"
+# Fallback only if `pixi run test` crashes inside Julia/OpenSSL:
+# LD_PRELOAD = "$PIXI_PROJECT_ROOT/deps/libMad-ubuntu-x86_64-v0.0.12-casadi/lib/julia/libcrypto.so"
+# Optional: point to your LibHSL install to use MA27/MA57/MA97 in CCOpt.
+# JULIA_HSL_LIBRARY_PATH = "/path/to/libhsl/lib"
+
+[tasks.setup-libmad]
+cmd = "mkdir -p deps && cd deps && curl -fL https://github.com/madsuite-org/libMad/releases/download/$LIBMAD_VERSION/libMad-ubuntu-x86_64-$LIBMAD_VERSION.tar.gz -o libMad.tar.gz && tar -xzf libMad.tar.gz && rm libMad.tar.gz"
+outputs = ["deps/libMad-ubuntu-x86_64-v0.0.12-casadi/lib/libMad.so"]
+description = "Download and extract the prebuilt libMad binaries into ./deps"
+
+[tasks.test]
+cmd = "python test_install.py --ccopt --camino --nosnoc"
+depends-on = ["setup-libmad"]
+description = "Check the install (CCOpt via libMad, CAMINO/bonmin, nosnoc)"
+
+[tasks.test-all]
+cmd = "python test_install.py --ccopt --camino --nosnoc --gurobi --libhsl"
+depends-on = ["setup-libmad"]
+description = "Same as `test`, plus the optional gurobi and LibHSL checks"
