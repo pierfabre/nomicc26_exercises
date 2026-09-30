@@ -33,7 +33,7 @@ if __name__ == "__main__":
         res_ccopt = model1.solve_ccopt() # Solve a second time for timing unspoiled by JIT.
         ccopt_stats = model1.ccopt_solver.stats()
         print(f"x_ccopt= {res_ccopt['x'][0:N]}")
-        print(f"y_ccopt= {np.round(1-res_ccopt['x'][-N:].full()).T}")
+        print(f"y_ccopt= {np.round(1-res_ccopt['x'][-2*N:-N].full()).T}")
         print(f"f_ccopt= {res_ccopt['f']}")
 
     # bonmin

@@ -111,11 +111,51 @@ class SparsePortfolioOptimization():
         and `self.ubw_ccopt` data vectors.
         """
 
-        raise NotImplementedError("Please implement the ccopt portfolio optimization solver")
+        self.x_plus = ca.SX.sym("x_plus", self.N)
+        self.x_minus = ca.SX.sym("x_minus", self.N)
+        self.z = ca.SX.sym("z", self.N)
+        self.x_abs = ca.SX.sym("x_abs", self.N)
+
+        # w = [x, x_plus, x_minus, z, x_abs]
+        self.w_ccopt = ca.vertcat(self.x, self.x_plus, self.x_minus, self.z, self.x_abs)
+
+        self.obj_ccopt = self.f_common + self.p_rho * ca.sum1(1 - self.z)
+
+        self.lb_common = np.ones(1)
+        self.ub_common = np.ones(1)
+
+        self.g_pos_neg = self.x - self.x_plus + self.x_minus
+        self.lb_pos_neg = np.zeros(self.N)
+        self.ub_pos_neg = np.zeros(self.N)
+
+        self.g_abs = self.x_abs - self.x_plus - self.x_minus
+        self.lb_abs = np.zeros(self.N)
+        self.ub_abs = np.zeros(self.N)
+
+        self.g_ccopt = ca.vertcat(self.g_common, self.g_pos_neg, self.g_abs)
+        self.lbg_ccopt = np.concatenate([self.lb_common, self.lb_pos_neg, self.lb_abs])
+        self.ubg_ccopt = np.concatenate([self.ub_common, self.ub_pos_neg, self.ub_abs])
+
+        self.ub_z = np.ones(self.N)
+
+        lb_inf = -np.inf * np.ones(self.N)
+        ub_inf = np.inf * np.ones(self.N)
+
+        zeros = np.zeros(self.N)
+        self.lbw_ccopt = np.concatenate([lb_inf, zeros, zeros, zeros, zeros])   # x free, rest ≥ 0
+        self.ubw_ccopt = np.concatenate([ub_inf, ub_inf, ub_inf, self.ub_z, ub_inf])  # z ≤ 1
+
+        self.cc_pairs = [[self.N + i, 2*self.N+i] for i in range(self.N)] + [[3*self.N + i, 4*self.N+i] for i in range(self.N)]
+        self.cc_types = [0] * 2 * self.N
+        breakpoint()
         casadi_solver_opts = {
-            "cc_pairs": [],
-            "cc_types": [], #cc_types from libMad: VARVAR 0 VARCON 1 CONVAR 2 CONCON 3
+            "cc_pairs": np.array(self.cc_pairs).tolist(),
+            "cc_types": np.array(self.cc_types).tolist(), #cc_types from libMad: VARVAR 0 VARCON 1 CONVAR 2 CONCON 3
             "print_time": False,
+        }
+        casadi_solver_opts["ccopt"] = {
+            "relaxation_update.TYPE": "RolloffRelaxationUpdate",
+            "q_regularization": "critical_rho"
         }
         casadi_solver_opts["madnlp"] = {
             "bound_relax_factor": 0.0
